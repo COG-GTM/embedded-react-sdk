@@ -11,6 +11,7 @@ import { DataView, DataTable, Flex } from '@/components/Common'
 import type { DescriptionListItem } from '@/components/Common/UI/DescriptionList/DescriptionListTypes'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
 import { formatNumberAsCurrency, formatPhoneNumber } from '@/helpers/formattedStrings'
+import { safeExternalUrl } from '@/helpers/safeExternalUrl'
 import { useI18n } from '@/i18n'
 import { useContainerBreakpoints } from '@/hooks/useContainerBreakpoints/useContainerBreakpoints'
 import ReceiptCheck from '@/assets/icons/receipt-check.svg?react'
@@ -152,7 +153,13 @@ export const PayrollReceiptsPresentation = ({
               i18nKey="receipt.companyInfo"
               t={t}
               components={{
-                licensesLink: <Link href={receiptData.licenseUri || ''} target="_blank" />,
+                licensesLink: (
+                  <Link
+                    href={safeExternalUrl(receiptData.licenseUri)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                ),
               }}
             />
           </Text>
