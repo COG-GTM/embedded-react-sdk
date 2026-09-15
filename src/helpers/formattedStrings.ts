@@ -226,13 +226,24 @@ export const useFormatCompensationRate = () => {
   )
 }
 
-const dompurifyConfig = { ALLOWED_TAGS: ['a', 'b', 'strong'], ALLOWED_ATTR: ['href', 'target'] }
+const dompurifyConfig = {
+  ALLOWED_TAGS: ['a', 'b', 'strong'],
+  ALLOWED_ATTR: ['href', 'target', 'rel'],
+}
+
+DOMPurify.addHook('afterSanitizeAttributes', node => {
+  if (node.hasAttribute('target')) {
+    node.setAttribute('rel', 'noopener noreferrer')
+  }
+})
+
 /**
  * Sanitizes an HTML string for use with React's `dangerouslySetInnerHTML`.
  *
  * @remarks Only `<a>`, `<b>`, and `<strong>` tags are allowed, and `<a>`
- * elements may retain only `href` and `target` attributes. All other markup
- * is stripped via DOMPurify.
+ * elements may retain only `href`, `target`, and `rel` attributes. Any
+ * element with a `target` attribute is forced to `rel="noopener noreferrer"`
+ * to prevent reverse tabnabbing. All other markup is stripped via DOMPurify.
  *
  * @param dirty - The raw HTML string to sanitize.
  * @returns An object shaped for `dangerouslySetInnerHTML`. The `__html`

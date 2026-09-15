@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify'
 import type { EmployeeStateTaxQuestion } from '@gusto/embedded-api/models/components/employeestatetaxquestion'
 import { type TaxRequirement } from '@gusto/embedded-api/models/components/taxrequirement'
 import { useTranslation } from 'react-i18next'
@@ -12,8 +11,7 @@ import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentCon
 import { useLocale } from '@/contexts/LocaleProvider'
 import { useMaskedTransform } from '@/helpers/mask'
 import { formatPercentLabel } from '@/helpers/percentageConversion'
-
-const dompurifyConfig = { ALLOWED_TAGS: ['a', 'b', 'strong'], ALLOWED_ATTR: ['target', 'href'] }
+import { createMarkup } from '@/helpers/formattedStrings'
 
 interface EmpQ {
   question: NonNullable<EmployeeStateTaxQuestion>
@@ -188,9 +186,7 @@ export function RadioInput({ question, requirement, isDisabled = false }: EmpQ |
       description={
         description && (
           <Text as="span">
-            <span
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description, dompurifyConfig) }}
-            />
+            <span dangerouslySetInnerHTML={createMarkup(description)} />
           </Text>
         )
       }
