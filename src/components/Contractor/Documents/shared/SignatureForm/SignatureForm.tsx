@@ -14,6 +14,7 @@ import { Form as FormLayout } from '@/components/Common/Form'
 import { SDKFormProvider } from '@/partner-hook-utils/form/SDKFormProvider'
 import { contractorEvents, componentEvents } from '@/shared/constants'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 /** IRS instructions page for completing Form W-9. */
 const W9_INSTRUCTIONS_URL = 'https://www.irs.gov/forms-pubs/about-form-w-9'
@@ -101,7 +102,7 @@ function Root({ documentUuid, dictionary }: SignatureFormProps) {
                   {t('instructions')}
                 </Components.Link>
               </Components.Text>
-              {pdfUrl && (
+              {isSafeHttpUrl(pdfUrl) && (
                 <Components.Text variant="supporting">
                   <Trans
                     t={t}

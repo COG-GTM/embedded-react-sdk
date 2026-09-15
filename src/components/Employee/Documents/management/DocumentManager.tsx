@@ -8,6 +8,7 @@ import { DocumentViewer } from '@/components/Common/DocumentViewer'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
 import { useI18n } from '@/i18n'
 import { componentEvents } from '@/shared/constants'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 /**
  * Props for {@link DocumentManager}.
@@ -74,7 +75,7 @@ function DocumentManagerRoot({
   return (
     <Flex className={className} flexDirection="column" gap={16}>
       {form.title && <Components.Heading as="h2">{form.title}</Components.Heading>}
-      {pdfUrl && (
+      {isSafeHttpUrl(pdfUrl) && (
         <Components.Text>
           <Trans
             t={t}

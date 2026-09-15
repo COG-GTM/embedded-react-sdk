@@ -40,4 +40,20 @@ describe('DocumentViewer', () => {
     )
     expect(getEmbed(container)).toBeNull()
   })
+
+  it('renders nothing when url uses the javascript: scheme', () => {
+    const { container } = renderWithProviders(
+      <DocumentViewer url="javascript:alert(1)" title="W-4" viewDocumentLabel="Download" />,
+    )
+    expect(getEmbed(container)).toBeNull()
+    expect(container.querySelector('a')).toBeNull()
+  })
+
+  it('renders nothing when url uses the data: scheme', () => {
+    const { container } = renderWithProviders(
+      <DocumentViewer url="data:text/html,<p>x</p>" title="W-4" viewDocumentLabel="Download" />,
+    )
+    expect(getEmbed(container)).toBeNull()
+    expect(container.querySelector('a')).toBeNull()
+  })
 })

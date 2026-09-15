@@ -10,6 +10,7 @@ import { useI18n } from '@/i18n'
 import { componentEvents } from '@/shared/constants'
 import { ActionsLayout, Flex } from '@/components/Common'
 import { DocumentViewer } from '@/components/Common/DocumentViewer'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 import { Form } from '@/components/Common/Form'
 import { SDKFormProvider } from '@/partner-hook-utils/form/SDKFormProvider'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
@@ -107,7 +108,7 @@ function Root({ employeeId, formId, className }: I9SignatureFormProps) {
                     i18nKey="description"
                     t={t}
                     components={{
-                      viewFormLink: pdfUrl ? (
+                      viewFormLink: isSafeHttpUrl(pdfUrl) ? (
                         <Components.Link
                           href={pdfUrl}
                           target="_blank"
