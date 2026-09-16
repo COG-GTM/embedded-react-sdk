@@ -235,7 +235,7 @@ const DocumentRequirementItem = ({
         <Text weight="medium">{title}</Text>
         <Text variant="supporting">{description}</Text>
       </Flex>
-      {(isPdfLoading || pdfUrl) && (
+      {(isPdfLoading || isSafeHttpUrl(pdfUrl)) && (
         <Button
           variant="secondary"
           isLoading={isPdfLoading}
