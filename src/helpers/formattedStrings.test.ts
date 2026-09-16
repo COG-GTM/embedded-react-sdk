@@ -9,6 +9,7 @@ import {
   formatCompensationRate,
   formatPhoneNumber,
   firstLastName,
+  createMarkup,
 } from './formattedStrings'
 
 describe('formattedStrings', () => {
@@ -159,6 +160,39 @@ describe('formattedStrings', () => {
       expect(weeklyResult).toBe('$52,000.00/yr')
       // Monthly: 5000 * 12 = 60000 (annualized)
       expect(monthlyResult).toBe('$60,000.00/yr')
+    })
+  })
+
+  describe('createMarkup', () => {
+    it('forces rel="noopener noreferrer" on anchors with a target attribute', () => {
+      const { __html } = createMarkup('<a href="https://example.com" target="_blank">x</a>')
+      const anchor = new DOMParser().parseFromString(__html, 'text/html').querySelector('a')
+      expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer')
+      expect(anchor?.getAttribute('href')).toBe('https://example.com')
+      expect(anchor?.getAttribute('target')).toBe('_blank')
+    })
+
+    it('overwrites an existing rel value on anchors with a target attribute', () => {
+      const { __html } = createMarkup(
+        '<a href="https://example.com" target="_blank" rel="opener">x</a>',
+      )
+      const anchor = new DOMParser().parseFromString(__html, 'text/html').querySelector('a')
+      expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer')
+    })
+
+    it('leaves anchors without a target attribute untouched', () => {
+      const { __html } = createMarkup('<a href="https://example.com">x</a>')
+      const anchor = new DOMParser().parseFromString(__html, 'text/html').querySelector('a')
+      expect(anchor?.hasAttribute('rel')).toBe(false)
+    })
+
+    it('strips disallowed tags and attributes', () => {
+      const { __html } = createMarkup('<script>alert(1)</script><a onclick="x()">y</a>')
+      expect(__html).toBe('<a>y</a>')
+    })
+
+    it('returns empty html for empty input', () => {
+      expect(createMarkup('')).toEqual({ __html: '' })
     })
   })
 

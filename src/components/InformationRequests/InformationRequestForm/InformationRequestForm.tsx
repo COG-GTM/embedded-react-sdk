@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify'
 import { useTranslation } from 'react-i18next'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -23,13 +22,10 @@ import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentCon
 import { useComponentDictionary, useI18n } from '@/i18n'
 import { informationRequestEvents, type EventType } from '@/shared/constants'
 import { useFlow } from '@/components/Flow/useFlow'
+import { createMarkup } from '@/helpers/formattedStrings'
 
 const INFORMATION_REQUEST_FORM_ID = 'gusto-sdk-information-request-form'
 const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf']
-const dompurifyConfig = {
-  ALLOWED_TAGS: ['a', 'b', 'strong'],
-  ALLOWED_ATTR: ['target', 'href', 'rel'],
-}
 
 /* API does not enforce an upper limit, so set a reasonable character max for a single-line input. */
 const MAX_TEXT_RESPONSE = 5000
@@ -204,12 +200,7 @@ function Root({ companyId, requestId, dictionary }: InformationRequestFormProps)
             {isDocumentType ? t('questionTypes.document') : t('questionTypes.answer')}
           </Text>
           <Text size="sm" variant="supporting">
-            {/* SECURITY: XSS mitigated via DOMPurify with strict allowlist. Pattern matches TaxInputs.tsx */}
-            <span
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(question.questionText, dompurifyConfig),
-              }}
-            />
+            <span dangerouslySetInnerHTML={createMarkup(question.questionText)} />
           </Text>
         </div>
 
