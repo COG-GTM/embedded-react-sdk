@@ -231,11 +231,13 @@ const dompurifyConfig = {
   ALLOWED_ATTR: ['href', 'target', 'rel'],
 }
 
-DOMPurify.addHook('afterSanitizeAttributes', node => {
-  if (node.hasAttribute('target')) {
-    node.setAttribute('rel', 'noopener noreferrer')
-  }
-})
+if (DOMPurify.isSupported) {
+  DOMPurify.addHook('afterSanitizeAttributes', node => {
+    if (node.hasAttribute('target')) {
+      node.setAttribute('rel', 'noopener noreferrer')
+    }
+  })
+}
 
 /**
  * Sanitizes an HTML string for use with React's `dangerouslySetInnerHTML`.

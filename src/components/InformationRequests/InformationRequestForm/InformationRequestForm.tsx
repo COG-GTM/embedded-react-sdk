@@ -200,7 +200,6 @@ function Root({ companyId, requestId, dictionary }: InformationRequestFormProps)
             {isDocumentType ? t('questionTypes.document') : t('questionTypes.answer')}
           </Text>
           <Text size="sm" variant="supporting">
-            {/* SECURITY: XSS mitigated via createMarkup (DOMPurify with strict allowlist) */}
             <span dangerouslySetInnerHTML={createMarkup(question.questionText)} />
           </Text>
         </div>
