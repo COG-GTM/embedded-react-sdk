@@ -11,6 +11,7 @@ import { useI18n } from '@/i18n'
 import { componentEvents, type EventType } from '@/shared/constants'
 import type { OnEventType } from '@/components/Base/useBase'
 import type { LoaderComponentType } from '@/components/Base'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 /**
  * Props for {@link DocumentsCard}.
@@ -148,7 +149,7 @@ function ViewButton({
     try {
       const { data } = await refetch()
       const url = data?.documentPdf?.documentUrl
-      if (url) {
+      if (isSafeHttpUrl(url)) {
         window.open(url, '_blank', 'noopener,noreferrer')
         onEvent(componentEvents.CONTRACTOR_MANAGEMENT_DOCUMENTS_CARD_VIEWED, {
           contractorId,

@@ -12,6 +12,7 @@ import { useI18n, useComponentDictionary } from '@/i18n'
 import { BaseComponent, useBase, type BaseComponentInterface } from '@/components/Base'
 import { componentEvents, ContractorOnboardingStatus } from '@/shared/constants'
 import { firstLastName } from '@/helpers/formattedStrings'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 import { W9_DOCUMENT_NAME } from '@/components/Contractor/Documents/shared/SignatureForm/useContractorSignatureForm/w9Fields'
 import { useContractorHasSignedW9 } from '@/components/Contractor/shared/useContractorHasSignedW9'
 
@@ -234,12 +235,12 @@ const DocumentRequirementItem = ({
         <Text weight="medium">{title}</Text>
         <Text variant="supporting">{description}</Text>
       </Flex>
-      {(isPdfLoading || pdfUrl) && (
+      {(isPdfLoading || isSafeHttpUrl(pdfUrl)) && (
         <Button
           variant="secondary"
           isLoading={isPdfLoading}
           onClick={() => {
-            if (pdfUrl) window.open(pdfUrl, '_blank', 'noopener,noreferrer')
+            if (isSafeHttpUrl(pdfUrl)) window.open(pdfUrl, '_blank', 'noopener,noreferrer')
           }}
         >
           {downloadLabel}

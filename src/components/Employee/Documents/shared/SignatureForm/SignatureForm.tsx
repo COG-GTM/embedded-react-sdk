@@ -10,6 +10,7 @@ import { Form } from '@/components/Common/Form'
 import { DocumentViewer } from '@/components/Common/DocumentViewer'
 import { SDKFormProvider } from '@/partner-hook-utils/form/SDKFormProvider'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 /**
  * Props for {@link SignatureForm}.
@@ -85,7 +86,7 @@ function Root({ employeeId, formId, className }: SignatureFormProps) {
                 <Components.Heading as="h2">
                   {t('signatureFormTitle', { formTitle: form.title })}
                 </Components.Heading>
-                {pdfUrl && (
+                {isSafeHttpUrl(pdfUrl) && (
                   <Components.Text>
                     <Trans
                       t={t}

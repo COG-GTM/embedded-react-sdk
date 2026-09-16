@@ -14,6 +14,7 @@ import { formatNumberAsCurrency, formatPhoneNumber } from '@/helpers/formattedSt
 import { useI18n } from '@/i18n'
 import { useContainerBreakpoints } from '@/hooks/useContainerBreakpoints/useContainerBreakpoints'
 import ReceiptCheck from '@/assets/icons/receipt-check.svg?react'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 interface PayrollReceiptsPresentationProps {
   className?: string
@@ -152,7 +153,12 @@ export const PayrollReceiptsPresentation = ({
               i18nKey="receipt.companyInfo"
               t={t}
               components={{
-                licensesLink: <Link href={receiptData.licenseUri || ''} target="_blank" />,
+                licensesLink: (
+                  <Link
+                    href={isSafeHttpUrl(receiptData.licenseUri) ? receiptData.licenseUri : ''}
+                    target="_blank"
+                  />
+                ),
               }}
             />
           </Text>

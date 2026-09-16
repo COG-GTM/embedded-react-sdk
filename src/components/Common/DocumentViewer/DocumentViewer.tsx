@@ -3,6 +3,7 @@ import { Flex } from '../Flex/Flex'
 import styles from './DocumentViewer.module.scss'
 import { useContainerBreakpoints } from '@/hooks/useContainerBreakpoints/useContainerBreakpoints'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 interface DocumentViewerProps {
   url?: string | null
   title?: string
@@ -27,7 +28,7 @@ export function DocumentViewer({
 
   const isContainerWidthSmallOrGreater = matches.includes('small')
 
-  if (!url) return null
+  if (!isSafeHttpUrl(url)) return null
 
   const commonEmbeddedPdfProps = {
     src: `${url}#toolbar=0&navpanes=0`,

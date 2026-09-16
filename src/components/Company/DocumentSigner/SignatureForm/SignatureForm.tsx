@@ -8,6 +8,7 @@ import { ActionsLayout, Flex } from '@/components/Common'
 import { Form as FormLayout } from '@/components/Common/Form'
 import { DocumentViewer } from '@/components/Common/DocumentViewer'
 import { SDKFormProvider } from '@/partner-hook-utils/form/SDKFormProvider'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 import { companyEvents } from '@/shared/constants'
 import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentContext'
 
@@ -96,7 +97,7 @@ function Root({ formId, children, dictionary, className }: SignatureFormProps) {
                     <Components.Heading as="h2">
                       {t('signatureFormTitle', { formTitle: form.title })}
                     </Components.Heading>
-                    {pdfUrl && (
+                    {isSafeHttpUrl(pdfUrl) && (
                       <Components.Text variant="supporting">
                         <Trans
                           t={t}

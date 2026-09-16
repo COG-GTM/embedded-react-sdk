@@ -5,6 +5,7 @@ import { useComponentContext } from '@/contexts/ComponentAdapter/useComponentCon
 import { useComponentDictionary, useI18n } from '@/i18n'
 import { ActionsLayout, Flex } from '@/components/Common'
 import { printChecksEvents, type EventType } from '@/shared/constants'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 interface PrintChecksSummaryProps extends BaseComponentInterface<'Payroll.PrintChecksSummary'> {
   documentUrl?: string
@@ -29,7 +30,7 @@ const Root = ({ dictionary, documentUrl, className }: PrintChecksSummaryProps) =
     <Flex className={className} flexDirection="column" gap={16}>
       <Heading as="h2">{t('succeededTitle')}</Heading>
       <Text variant="supporting">{t('succeededDescription')}</Text>
-      {documentUrl && (
+      {isSafeHttpUrl(documentUrl) && (
         <Link href={documentUrl} target="_blank" rel="noreferrer">
           {t('viewChecksCta')}
         </Link>

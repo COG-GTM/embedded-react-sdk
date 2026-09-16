@@ -15,6 +15,7 @@ import useNumberFormatter from '@/hooks/useNumberFormatter'
 import { useDateFormatter } from '@/hooks/useDateFormatter'
 import { addressInline, formatPhoneNumber } from '@/helpers/formattedStrings'
 import ReceiptCheck from '@/assets/icons/receipt-check.svg?react'
+import { isSafeHttpUrl } from '@/helpers/isSafeHttpUrl'
 
 interface PaymentStatementPresentationProps {
   /** CSS class name applied to the root element. */
@@ -159,7 +160,14 @@ export const PaymentStatementPresentation = ({
                   i18nKey="receipt.disclaimer"
                   t={t}
                   components={{
-                    licensesLink: <Link href={paymentReceipt?.licenseUri || ''} target="_blank" />,
+                    licensesLink: (
+                      <Link
+                        href={
+                          isSafeHttpUrl(paymentReceipt?.licenseUri) ? paymentReceipt.licenseUri : ''
+                        }
+                        target="_blank"
+                      />
+                    ),
                   }}
                 />
               </Text>
